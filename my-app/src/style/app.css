@@ -1,8 +1,12 @@
-@import url("https://fonts.googleapis.com/css?family=Josefin+Sans:400,700");
-@import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css");
-
+@import url("./bootstrap.min.css");
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("./JosefinSans-Regular.ttf");
+}
 body {
   background: url("bg.jpg");
+}
+.App {
   font-family: "Josefin Sans", sans-serif;
   color: #f12d68;
 }
@@ -97,7 +101,7 @@ h5 {
   padding: 20px;
   background: #dee2e6;
   width: 270px;
-  height: 330px;
+  height: 400px;
   color: white;
   display: none;
 }
@@ -113,6 +117,10 @@ h5 {
 
 #edAcct {
   background: white;
+}
+
+#body2 {
+  display: none;
 }
 
 /* EditDonorAcct */

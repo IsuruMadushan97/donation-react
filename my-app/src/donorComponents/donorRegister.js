@@ -13,18 +13,14 @@ class donorRegister extends React.Component {
   };
 
   onChange = e => {
-    // Because we named the inputs to match their corresponding values in state, it's
-    // super easy to update the state
     this.setState({ [e.target.name]: e.target.value });
     console.log({ [e.target.name]: e.target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    // get our form data out of state
     const { name, email, gender, age, city, password } = this.state;
 
-    // const { name, email, gender, age, city, password } = this.state;
     var postString =
       "http://localhost:8000/donors?email=" +
       email +
@@ -73,7 +69,7 @@ class donorRegister extends React.Component {
                 </div>
                 <div className="input-group">
                   <input
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     className="form-control"
@@ -103,7 +99,6 @@ class donorRegister extends React.Component {
               <div className="input-group">
                 <input
                   type="text"
-                  id="name"
                   name="name"
                   value={name}
                   className="form-control"
@@ -114,7 +109,6 @@ class donorRegister extends React.Component {
               <div className="input-group">
                 <input
                   type="text"
-                  id="email"
                   name="email"
                   value={email}
                   className="form-control"
@@ -125,7 +119,6 @@ class donorRegister extends React.Component {
               <div className="input-group">
                 <input
                   type="text"
-                  id="gender"
                   name="gender"
                   value={gender}
                   className="form-control"
@@ -135,8 +128,7 @@ class donorRegister extends React.Component {
               </div>
               <div className="input-group">
                 <input
-                  type="text"
-                  id="age"
+                  type="number"
                   name="age"
                   value={age}
                   className="form-control"
@@ -147,7 +139,6 @@ class donorRegister extends React.Component {
               <div className="input-group">
                 <input
                   type="text"
-                  id="city"
                   name="city"
                   value={city}
                   className="form-control"
@@ -157,8 +148,7 @@ class donorRegister extends React.Component {
               </div>
               <div className="input-group">
                 <input
-                  type="text"
-                  id="password"
+                  type="password"
                   name="password"
                   value={password}
                   className="form-control"

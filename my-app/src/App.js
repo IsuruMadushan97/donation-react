@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./app.css";
+import "./style/app.css";
 
 import donorRegister from "./donorComponents/donorRegister";
 import loggedInDonor from "./donorComponents/loggedInDonor";
@@ -17,17 +17,15 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={donorRegister} />
-              <Route path="/loggedInDonor" component={loggedInDonor} />
-              <Route path="/editDonorAcct" component={editDonorAcct} />
+          <Switch>
+            <Route exact path="/" component={donorRegister} />
+            <Route path="/loggedInDonor" component={loggedInDonor} />
+            <Route path="/editDonorAcct" component={editDonorAcct} />
 
-              <Route path="/hospitalRegister" component={hospitalRegister} />
-              <Route path="/loggedInHospital" component={loggedInHospital} />
-              <Route path="/editHospitalAcct" component={editHospitalAcct} />
-            </Switch>
-          </div>
+            <Route path="/hospitalRegister" component={hospitalRegister} />
+            <Route path="/loggedInHospital" component={loggedInHospital} />
+            <Route path="/editHospitalAcct" component={editHospitalAcct} />
+          </Switch>
         </div>
       </Router>
     );
