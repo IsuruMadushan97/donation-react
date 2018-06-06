@@ -1,8 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class donorRegister extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    gender: "",
+    age: "",
+    city: "",
+    password: ""
+  };
+
+  onChange = e => {
+    // Because we named the inputs to match their corresponding values in state, it's
+    // super easy to update the state
+    this.setState({ [e.target.name]: e.target.value });
+    console.log({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    // get our form data out of state
+    const { name, email, gender, age, city, password } = this.state;
+
+    // const { name, email, gender, age, city, password } = this.state;
+    var postString =
+      "http://localhost:8000/donors?email=" +
+      email +
+      "&name=" +
+      name +
+      "&gender=" +
+      gender +
+      "&age=" +
+      age +
+      "&city=" +
+      city +
+      "&password=" +
+      password;
+    axios.post(postString, {}).then(result => {
+      console.log("1:" + postString);
+    });
+  };
+
   render() {
+    const { name, email, gender, age, city, password } = this.state;
     return (
       <div>
         <header>Donors Site</header>
@@ -17,15 +59,14 @@ class donorRegister extends React.Component {
               <h5>Login:</h5>
               <form
                 className="form-signin"
-                action="/donorRegister"
-                method="post"
+                onSubmit={this.handleSubmit}
                 id="hideform"
               >
                 <div className="input-group">
                   <input
                     type="text"
                     id="email"
-                    name="loginEmail"
+                    name="email"
                     className="form-control"
                     placeholder="Email"
                   />
@@ -34,7 +75,7 @@ class donorRegister extends React.Component {
                   <input
                     type="text"
                     id="password"
-                    name="loginPassword"
+                    name="password"
                     className="form-control"
                     placeholder="Password"
                   />
@@ -56,62 +97,73 @@ class donorRegister extends React.Component {
             <h5>Register:</h5>
             <form
               className="form-signin"
-              action="/signup"
-              method="post"
+              onSubmit={this.onSubmit}
               id="hideform"
             >
               <div className="input-group">
                 <input
                   type="text"
-                  id="fullName"
-                  name="userFullName"
+                  id="name"
+                  name="name"
+                  value={name}
                   className="form-control"
                   placeholder="Full Name"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
                   type="text"
                   id="email"
-                  name="userEmail"
+                  name="email"
+                  value={email}
                   className="form-control"
                   placeholder="Email"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
                   type="text"
                   id="gender"
-                  name="userGender"
+                  name="gender"
+                  value={gender}
                   className="form-control"
                   placeholder="Gender"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
                   type="text"
                   id="age"
-                  name="userAge"
+                  name="age"
+                  value={age}
                   className="form-control"
                   placeholder="Age"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
                   type="text"
                   id="city"
-                  name="userCity"
+                  name="city"
+                  value={city}
                   className="form-control"
                   placeholder="City"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
                   type="text"
                   id="password"
-                  name="userPassword"
+                  name="password"
+                  value={password}
                   className="form-control"
                   placeholder="Password"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">

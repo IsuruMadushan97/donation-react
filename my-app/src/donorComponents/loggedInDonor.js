@@ -1,9 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+const em = "wow@wow.com";
 class loggedInDonor extends React.Component {
-  saySomething(something) {
-    console.log(something);
+  state = {
+    donations: []
+  };
+  // state = {
+  //   email: ""
+  // };
+  componentDidMount() {
+    let getString = "http://localhost:8000/donations/" + em;
+    axios.get(getString).then(res => {
+      const donations = res.data;
+      this.setState({ donations });
+      console.log(this.state.donations);
+    });
   }
 
   handleClick(e) {
@@ -32,33 +44,18 @@ class loggedInDonor extends React.Component {
                   <th scope="col">ID</th>
                   <th scope="col">Type</th>
                   <th scope="col">Notes</th>
-                  <th scope="col">Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr onClick={this.handleClick.bind(this)}>
-                  {/* <tr> */}
-                  <th id="aa" scope="row">
-                    1
-                  </th>
-                  <td>blood</td>
-                  <td>O+</td>
-                  <td>2018/01/17</td>
-                </tr>
-                <tr onClick={this.handleClick.bind(this)}>
-                  {/* <tr> */}
-                  <th scope="row">2</th>
-                  <td>kidney</td>
-                  <td>none</td>
-                  <td>2017/11/08</td>
-                </tr>
-                <tr onClick={this.handleClick.bind(this)}>
-                  {/* <tr> */}
-                  <th scope="row">3</th>
-                  <td>lung</td>
-                  <td>none</td>
-                  <td>2018/02/04</td>
-                </tr>
+                {this.state.donations.map(person => (
+                  <tr onClick={this.handleClick.bind(this)}>
+                    <th id="aa" scope="row">
+                      {person.id}
+                    </th>
+                    <td>{person.type}</td>
+                    <td>{person.notes}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -148,7 +145,7 @@ class loggedInDonor extends React.Component {
                     value="cancel"
                     className="btn btn-lg btn-light btn-block form-control"
                     name="cancel"
-                    onClick="window.location='/donor/loggedInDonor/index.html';"
+                    // onClick="window.location='/donor/loggedInDonor/index.html';"
                   />
                 </div>
               </form>

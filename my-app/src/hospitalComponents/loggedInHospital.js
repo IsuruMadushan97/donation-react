@@ -1,7 +1,58 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class loggedInHospital extends React.Component {
+  state = {
+    donations: [],
+    donors: []
+  };
+  componentDidMount() {
+    let donations = [];
+    axios.get("http://localhost:8000/donations").then(res => {
+      donations = res.data;
+      console.log(donations);
+
+      let donors = [];
+      donations.forEach(element => {
+        // console.log(element.donor_email);
+
+        let getString = "http://localhost:8000/donors/" + element.donor_email;
+        axios.get(getString).then(res => {
+          let donor = res.data;
+          // this.setState({ donations });
+          donors.push(donor);
+        });
+      });
+      this.setState({ donations: donations, donors: donors });
+      console.log(this.state.donors);
+    });
+  }
+
+  search(e) {
+    // Declare variables
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+
+    let e2 = document.getElementById("sel1");
+    let columnIndex = e2.options[e2.selectedIndex].value;
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[columnIndex];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -21,7 +72,7 @@ class loggedInHospital extends React.Component {
               type="text"
               id="myInput"
               className="form-control"
-              onkeyup="search()"
+              onKeyUp={this.search.bind(this)}
               placeholder="Search.."
             />
             <div id="options" className="form-group">
@@ -40,53 +91,45 @@ class loggedInHospital extends React.Component {
           <div style={{ overflowX: "auto" }}>
             <table id="myTable" className="table">
               <thead className="thead-dark">
-                <tr onclick="window.location='#';">
-                  <th onclick="sortTable(0)" scope="col">
-                    ID
-                  </th>
-                  <th onclick="sortTable(1)" scope="col">
-                    Type
-                  </th>
-                  <th onclick="sortTable(2)" scope="col">
-                    Notes
-                  </th>
-                  <th onclick="sortTable(3)" scope="col">
-                    Date
-                  </th>
-                  <th onclick="sortTable(4)" scope="col">
-                    Gender
-                  </th>
-                  <th onclick="sortTable(5)" scope="col">
-                    Email
-                  </th>
-                  <th onclick="sortTable(6)" scope="col">
-                    Age
-                  </th>
-                  <th onclick="sortTable(7)" scope="col">
-                    City
-                  </th>
+                {/* <tr onclick="window.location='#';"> */}
+                <tr>
+                  {/* <th onclick="sortTable(0)" scope="col"> */}
+                  <th>ID</th>
+                  {/* <th onclick="sortTable(1)" scope="col"> */}
+                  <th>Type</th>
+                  {/* <th onclick="sortTable(2)" scope="col"> */}
+                  <th>Notes</th>
+                  {/* <th onclick="sortTable(3)" scope="col"> */}
+                  <th>Gender</th>
+                  {/* <th onclick="sortTable(4)" scope="col"> */}
+                  <th>Email</th>
+                  {/* <th onclick="sortTable(5)" scope="col"> */}
+                  <th>Age</th>
+                  {/* <th onclick="sortTable(6)" scope="col"> */}
+                  <th>City</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <b>1</b>
-                  </td>
-                  <td>blood</td>
-                  <td>O+</td>
-                  <td>2018/01/17</td>
-                  <td>Male</td>
-                  <td>test@examlpe.com</td>
-                  <td>27</td>
-                  <td>Riyadh</td>
-                </tr>
+                {this.state.donations.map(donation => (
+                  <tr>
+                    <th>{donation.id}</th>
+                    <td>{donation.type}</td>
+                    <td>{donation.notes}</td>
+                    {console.log("HERE1", this.state.donors)}
+                    {console.log("HERE2", this.state.donations)}
+                    <td>{this.state.donors.gender}</td>
+                    <td>{this.state.donors.email}</td>
+                    <td>{this.state.donors.age}</td>
+                    <td>{this.state.donors.city}</td>
+                  </tr>
+                ))}
+
                 <tr>
                   <td>
                     <b>2</b>
                   </td>
                   <td>kidney</td>
                   <td>none</td>
-                  <td>2017/11/08</td>
                   <td>Female</td>
                   <td>test@examlpe.com</td>
                   <td>20</td>
@@ -98,7 +141,6 @@ class loggedInHospital extends React.Component {
                   </td>
                   <td>lung</td>
                   <td>none</td>
-                  <td>2018/02/04</td>
                   <td>Male</td>
                   <td>test@examlpe.com</td>
                   <td>35</td>
