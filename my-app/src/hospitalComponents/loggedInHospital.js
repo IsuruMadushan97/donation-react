@@ -1,9 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
-
-let em = 6;
-let emil = "AAA";
+import HospitalProfile from "./hospitalProfile";
 
 class loggedInHospital extends React.Component {
   state = {
@@ -13,6 +11,7 @@ class loggedInHospital extends React.Component {
     hospitalCity: "",
     hospitalPassword: ""
   };
+
   componentDidMount() {
     let donations = [];
     axios.get("http://localhost:8000/donations").then(res => {
@@ -31,11 +30,8 @@ class loggedInHospital extends React.Component {
     let hospitalEmail = this.state.hospitalEmail;
     let hospitalCity = this.state.hospitalCity;
     let hospitalPassword = this.state.hospitalPassword;
-    // hospitalFullName = encodeURIComponent(hospitalFullName);
-    // hospitalCity = encodeURIComponent(hospitalCity);
-    // hospitalPassword = encodeURIComponent(hospitalPassword);
+    let em = HospitalProfile.getEm();
 
-    //    http://localhost:8000/hospitals/3?email=SSS&name=SSS&city=SSS&password=SSS
     var postString =
       "http://localhost:8000/hospitals/" +
       em +
@@ -59,6 +55,7 @@ class loggedInHospital extends React.Component {
     let body2 = document.getElementById("body4");
     body1.style = "display:none";
     body2.style = "display:block";
+    let emil = HospitalProfile.getEmil();
 
     let getString = "http://localhost:8000/hospitals/" + emil;
     axios.get(getString).then(res => {
@@ -97,6 +94,11 @@ class loggedInHospital extends React.Component {
     }
   }
 
+  logout(e) {
+    HospitalProfile.signout();
+    this.props.history.push("/hospitalRegister");
+  }
+
   cancel(e) {
     let body1 = document.getElementById("body3");
     let body2 = document.getElementById("body4");
@@ -110,18 +112,21 @@ class loggedInHospital extends React.Component {
         <div id="body3">
           <header>Hospitals Site</header>
           <div id="fullBox3">
-            <Link to="/hospitalRegister" className={"text-dark"}>
-              Logout
-            </Link>
-
             <h2>Welcome!</h2>
-            <input
-              type="button"
-              value="Edit my account"
-              className="btn btn-light btn-block form-control"
-              name="cancel"
-              onClick={this.editAcct.bind(this)}
-            />
+            <div id="divideBtns">
+              <input
+                type="button"
+                value="Edit my account"
+                className="btn btn-light btn-block form-control halfBtn"
+                onClick={this.editAcct.bind(this)}
+              />
+              <input
+                type="button"
+                value="Logout"
+                className="btn btn-light btn-block form-control halfBtn"
+                onClick={this.logout.bind(this)}
+              />
+            </div>
 
             <h5>Choose Donors:</h5>
             <div id="searchBox">
@@ -250,4 +255,4 @@ class loggedInHospital extends React.Component {
   }
 }
 
-export default loggedInHospital;
+export default withRouter(loggedInHospital);

@@ -1,13 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import HospitalProfile from "./hospitalProfile";
 
 class hospitalRegister extends React.Component {
   state = {
     name: "",
     email: "",
     city: "",
-    password: ""
+    password: "",
+
+    loginEmail: "",
+    loginPassword: ""
   };
 
   onChange = e => {
@@ -35,8 +39,40 @@ class hospitalRegister extends React.Component {
     });
   };
 
+  onLogin = e => {
+    e.preventDefault();
+    const { loginEmail, loginPassword } = this.state;
+
+    var postString =
+      "http://localhost:8000/hospitalspass/" +
+      loginEmail +
+      "?password=" +
+      loginPassword;
+    axios.get(postString, {}).then(result => {
+      let isCorrectPassword = result.data;
+      if (isCorrectPassword) {
+        console.log("Correct");
+        HospitalProfile.setEm(loginEmail);
+        HospitalProfile.authenticate();
+        setTimeout(() => {
+          this.props.history.push("/loggedInHospital");
+        }, 200);
+      } else {
+        console.log("Not Correct");
+        HospitalProfile.signout();
+      }
+    });
+  };
+
   render() {
-    const { name, email, city, password } = this.state;
+    const {
+      name,
+      email,
+      city,
+      password,
+      loginEmail,
+      loginPassword
+    } = this.state;
     return (
       <div>
         <header>Hospitals Site</header>
@@ -48,21 +84,25 @@ class hospitalRegister extends React.Component {
             <Link to="/" className={"text-danger"}>
               A donor?
             </Link>
-            <form className="form-signin" action="index.html" method="post">
+            <form className="form-signin" onSubmit={this.onLogin}>
               <div className="input-group">
                 <input
                   type="text"
                   name="loginEmail"
+                  value={loginEmail}
                   className="form-control"
                   placeholder="Email"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">
                 <input
-                  type="text"
+                  type="password"
                   name="loginPassword"
+                  value={loginPassword}
                   className="form-control"
                   placeholder="Password"
+                  onChange={this.onChange}
                 />
               </div>
               <div className="input-group">

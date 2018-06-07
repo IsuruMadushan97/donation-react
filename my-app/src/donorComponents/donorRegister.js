@@ -11,10 +11,9 @@ class donorRegister extends React.Component {
     age: "",
     city: "",
     password: "",
-    loginEmail: "",
-    loginPassword: "",
 
-    redirectToReferrer: false
+    loginEmail: "",
+    loginPassword: ""
   };
 
   onChange = e => {
@@ -77,6 +76,7 @@ class donorRegister extends React.Component {
       age,
       city,
       password,
+
       loginEmail,
       loginPassword
     } = this.state;

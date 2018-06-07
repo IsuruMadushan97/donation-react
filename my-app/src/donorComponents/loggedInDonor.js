@@ -213,6 +213,7 @@ class loggedInDonor extends React.Component {
     }, 500);
     this.cancel();
   }
+
   render() {
     return (
       <div>
@@ -250,14 +251,12 @@ class loggedInDonor extends React.Component {
                   type="button"
                   value="Edit my account"
                   className="btn btn-light btn-block form-control halfBtn"
-                  name="cancel"
                   onClick={this.editAcct.bind(this)}
                 />
                 <input
                   type="button"
                   value="Logout"
                   className="btn btn-light btn-block form-control halfBtn"
-                  name="logout"
                   onClick={this.logout.bind(this)}
                 />
               </div>

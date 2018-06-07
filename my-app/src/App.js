@@ -7,20 +7,16 @@ import {
 } from "react-router-dom";
 
 import "./style/app.css";
+
 import DonorProfile from "./donorComponents/donorProfile";
-
-// public + login
 import donorRegister from "./donorComponents/donorRegister";
-
-// protected
 import loggedInDonor from "./donorComponents/loggedInDonor";
 
+import HospitalProfile from "./hospitalComponents/hospitalProfile";
 import hospitalRegister from "./hospitalComponents/hospitalRegister";
 import loggedInHospital from "./hospitalComponents/loggedInHospital";
 
-// import route Components here
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const DonorPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
@@ -33,20 +29,36 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
+const HospitalPrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      HospitalProfile.isAuthenticated() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/hospitalRegister" />
+      )
+    }
+  />
+);
+
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
           <Switch>
-            {/* public + login*/}
             <Route exact path="/" component={donorRegister} />
-            {/* protected */}
-            {/* <Route path="/loggedInDonor" component={loggedInDonor} /> */}
+            <DonorPrivateRoute
+              path="/loggedInDonor"
+              component={loggedInDonor}
+            />
 
             <Route path="/hospitalRegister" component={hospitalRegister} />
-            <Route path="/loggedInHospital" component={loggedInHospital} />
-            <PrivateRoute path="/loggedInDonor" component={loggedInDonor} />
+            <HospitalPrivateRoute
+              path="/loggedInHospital"
+              component={loggedInHospital}
+            />
           </Switch>
         </div>
       </Router>
