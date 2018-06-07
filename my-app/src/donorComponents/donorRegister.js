@@ -53,15 +53,10 @@ class donorRegister extends React.Component {
             <div id="wholeLogin">
               <br />These are some words that encourage people to donate
               <h5>Login:</h5>
-              <form
-                className="form-signin"
-                onSubmit={this.handleSubmit}
-                id="hideform"
-              >
+              <form className="form-signin" onSubmit={this.handleSubmit}>
                 <div className="input-group">
                   <input
                     type="text"
-                    id="email"
                     name="email"
                     className="form-control"
                     placeholder="Email"
@@ -70,7 +65,6 @@ class donorRegister extends React.Component {
                 <div className="input-group">
                   <input
                     type="password"
-                    id="password"
                     name="password"
                     className="form-control"
                     placeholder="Password"
@@ -82,7 +76,6 @@ class donorRegister extends React.Component {
                     value="Login"
                     className="btn btn-lg btn-light btn-block form-control"
                     name="add"
-                    id="myClick"
                   />
                 </div>
               </form>
@@ -91,11 +84,7 @@ class donorRegister extends React.Component {
 
           <div id="regBox">
             <h5>Register:</h5>
-            <form
-              className="form-signin"
-              onSubmit={this.onSubmit}
-              id="hideform"
-            >
+            <form className="form-signin" onSubmit={this.onSubmit}>
               <div className="input-group">
                 <input
                   type="text"
@@ -162,7 +151,6 @@ class donorRegister extends React.Component {
                   value="Confirm"
                   className="btn btn-lg btn-light btn-block form-control"
                   name="add"
-                  id="myClick"
                 />
               </div>
             </form>

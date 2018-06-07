@@ -1,8 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class hospitalRegister extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    city: "",
+    password: ""
+  };
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+    console.log({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = e => {
+    console.log("On s");
+
+    e.preventDefault();
+    const { name, email, city, password } = this.state;
+
+    var postString =
+      "http://localhost:8000/hospitals?email=" +
+      email +
+      "&name=" +
+      name +
+      "&city=" +
+      city +
+      "&password=" +
+      password;
+    axios.post(postString, {}).then(result => {
+      console.log("1:" + postString);
+    });
+  };
+
   render() {
+    const { name, email, city, password } = this.state;
     return (
       <div>
         <header>Hospitals Site</header>
@@ -14,16 +48,10 @@ class hospitalRegister extends React.Component {
             <Link to="/" className={"text-danger"}>
               A donor?
             </Link>
-            <form
-              className="form-signin"
-              action="index.html"
-              method="post"
-              id="hideform"
-            >
+            <form className="form-signin" action="index.html" method="post">
               <div className="input-group">
                 <input
                   type="text"
-                  id="email"
                   name="loginEmail"
                   className="form-control"
                   placeholder="Email"
@@ -32,7 +60,6 @@ class hospitalRegister extends React.Component {
               <div className="input-group">
                 <input
                   type="text"
-                  id="password"
                   name="loginPassword"
                   className="form-control"
                   placeholder="Password"
@@ -44,64 +71,62 @@ class hospitalRegister extends React.Component {
                   value="Login"
                   className="btn btn-lg btn-light btn-block form-control"
                   name="add"
-                  id="myClick"
                 />
               </div>
             </form>
           </div>
           <div id="regBox">
             <h5>Hospitals Registration:</h5>
-            <form
-              className="form-signin"
-              action="index.html"
-              method="post"
-              id="hideform"
-            />
-            <div className="input-group">
-              <input
-                type="text"
-                id="fullName"
-                name="hospitalFullName"
-                className="form-control"
-                placeholder="Hospital Full Name"
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="text"
-                id="email"
-                name="hospitalEmail"
-                className="form-control"
-                placeholder="Admin Email"
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="text"
-                id="city"
-                name="userCity"
-                className="form-control"
-                placeholder="City"
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="text"
-                id="password"
-                name="userPassword"
-                className="form-control"
-                placeholder="Password"
-              />
-            </div>
-            <div className="input-group">
-              <input
-                type="submit"
-                value="Confirm"
-                className="btn btn-lg btn-light btn-block form-control"
-                name="add"
-                id="myClick"
-              />
-            </div>
+            <form className="form-signin" onSubmit={this.onSubmit}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  name="name"
+                  value={name}
+                  className="form-control"
+                  placeholder="Hospital Full Name"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  name="email"
+                  value={email}
+                  className="form-control"
+                  placeholder="Admin Email"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  name="city"
+                  value={city}
+                  className="form-control"
+                  placeholder="City"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="password"
+                  name="password"
+                  value={password}
+                  className="form-control"
+                  placeholder="Password"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className="btn btn-lg btn-light btn-block form-control"
+                  name="add"
+                />
+              </div>
+            </form>
           </div>
         </div>
       </div>
