@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-let em = 1;
-let emil = "asd";
+let em = 6;
+let emil = "AAA";
 
 class loggedInHospital extends React.Component {
   state = {
     donations: [],
-    donors: [],
     hospitalFullName: "",
     hospitalEmail: "",
     hospitalCity: "",
@@ -17,18 +16,7 @@ class loggedInHospital extends React.Component {
     let donations = [];
     axios.get("http://localhost:8000/donations").then(res => {
       donations = res.data;
-
-      let donors = [];
-      donations.forEach(element => {
-        let getString = "http://localhost:8000/donors/" + element.donor_id;
-        axios.get(getString).then(res => {
-          let donor = res.data;
-          // this.setState({ donations });
-          donors.push(donor);
-        });
-      });
-
-      this.setState({ donations: donations, donors: donors });
+      this.setState({ donations: donations });
     });
   }
 
@@ -176,35 +164,12 @@ class loggedInHospital extends React.Component {
                       </td>
                       <td>{donation.type}</td>
                       <td>{donation.notes}</td>
-                      <td>{this.state.donors.gender}</td>
-                      <td>{this.state.donors.email}</td>
-                      <td>{this.state.donors.age}</td>
-                      <td>{this.state.donors.city}</td>
+                      <td>{donation.gender}</td>
+                      <td>{donation.email}</td>
+                      <td>{donation.age}</td>
+                      <td>{donation.city}</td>
                     </tr>
                   ))}
-
-                  <tr>
-                    <td>
-                      <b>2</b>
-                    </td>
-                    <td>kidney</td>
-                    <td>none</td>
-                    <td>Female</td>
-                    <td>test@examlpe.com</td>
-                    <td>20</td>
-                    <td>Riyadh</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <b>3</b>
-                    </td>
-                    <td>lung</td>
-                    <td>none</td>
-                    <td>Male</td>
-                    <td>test@examlpe.com</td>
-                    <td>35</td>
-                    <td>Jeddah</td>
-                  </tr>
                 </tbody>
               </table>
             </div>

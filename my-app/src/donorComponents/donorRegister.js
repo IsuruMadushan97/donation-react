@@ -9,7 +9,9 @@ class donorRegister extends React.Component {
     gender: "",
     age: "",
     city: "",
-    password: ""
+    password: "",
+    loginEmail: "",
+    loginPassword: ""
   };
 
   onChange = e => {
@@ -39,8 +41,36 @@ class donorRegister extends React.Component {
     });
   };
 
+  onLogin = e => {
+    e.preventDefault();
+    const { loginEmail, loginPassword } = this.state;
+
+    var postString =
+      "http://localhost:8000/donorspass/" +
+      loginEmail +
+      "?password=" +
+      loginPassword;
+    axios.get(postString, {}).then(result => {
+      let isCorrectPassword = result.data;
+      if (isCorrectPassword) {
+        console.log("Correct");
+      } else {
+        console.log("Not Correct");
+      }
+    });
+  };
+
   render() {
-    const { name, email, gender, age, city, password } = this.state;
+    const {
+      name,
+      email,
+      gender,
+      age,
+      city,
+      password,
+      loginEmail,
+      loginPassword
+    } = this.state;
     return (
       <div>
         <header>Donors Site</header>
@@ -53,21 +83,25 @@ class donorRegister extends React.Component {
             <div id="wholeLogin">
               <br />These are some words that encourage people to donate
               <h5>Login:</h5>
-              <form className="form-signin" onSubmit={this.handleSubmit}>
+              <form className="form-signin" onSubmit={this.onLogin}>
                 <div className="input-group">
                   <input
                     type="text"
-                    name="email"
+                    name="loginEmail"
+                    value={loginEmail}
                     className="form-control"
                     placeholder="Email"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="input-group">
                   <input
                     type="password"
-                    name="password"
+                    name="loginPassword"
+                    value={loginPassword}
                     className="form-control"
                     placeholder="Password"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="input-group">
