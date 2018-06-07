@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import DonorProfile from "./donorProfile";
 
 class donorRegister extends React.Component {
   state = {
@@ -11,7 +12,9 @@ class donorRegister extends React.Component {
     city: "",
     password: "",
     loginEmail: "",
-    loginPassword: ""
+    loginPassword: "",
+
+    redirectToReferrer: false
   };
 
   onChange = e => {
@@ -54,8 +57,14 @@ class donorRegister extends React.Component {
       let isCorrectPassword = result.data;
       if (isCorrectPassword) {
         console.log("Correct");
+        DonorProfile.setEm(loginEmail);
+        DonorProfile.authenticate();
+        setTimeout(() => {
+          this.props.history.push("/loggedInDonor");
+        }, 200);
       } else {
         console.log("Not Correct");
+        DonorProfile.signout();
       }
     });
   };

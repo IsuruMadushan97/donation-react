@@ -125,7 +125,14 @@ h5 {
 #body4 {
   display: none;
 }
-
+#divideBtns {
+  display: flex;
+}
+.halfBtn {
+  width: 50%;
+  margin: 10px;
+  padding: 10px;
+}
 /* EditDonorAcct */
 /* ----------------------------- */
 #regBox2 {

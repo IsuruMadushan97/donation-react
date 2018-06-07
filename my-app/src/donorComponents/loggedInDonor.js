@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
-let em = 4;
-let emil = "the newest10";
+import DonorProfile from "./donorProfile";
+
 class loggedInDonor extends React.Component {
   state = {
     donations: [],
@@ -29,6 +29,7 @@ class loggedInDonor extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     let { type, notes } = this.state;
+    let em = DonorProfile.getEm();
 
     type = encodeURIComponent(type);
     notes = encodeURIComponent(notes);
@@ -56,6 +57,7 @@ class loggedInDonor extends React.Component {
     let id = this.state.updateId;
     let type = this.state.updateType;
     let notes = this.state.updateNotes;
+    let em = DonorProfile.getEm();
 
     id = encodeURIComponent(id);
     type = encodeURIComponent(type);
@@ -93,10 +95,8 @@ class loggedInDonor extends React.Component {
     donorAge = encodeURIComponent(donorAge);
     donorCity = encodeURIComponent(donorCity);
     donorPassword = encodeURIComponent(donorPassword);
-    console.log("Old email: " + em);
-    console.log("New Email: " + donorEmail);
+    let em = DonorProfile.getEm();
 
-    //   The NewAAA?email=WWWW&name=New Name&gender=New Gender&age=30&city=New City&password=New Password
     var postString =
       "http://localhost:8000/donors/" +
       em +
@@ -122,11 +122,11 @@ class loggedInDonor extends React.Component {
   };
 
   componentDidMount() {
+    let em = DonorProfile.getEm();
     let getString = "http://localhost:8000/donations/" + em;
     axios.get(getString).then(res => {
       const donations = res.data;
       if (donations != null) this.setState({ donations: donations });
-      console.log("HHHEEERRREE", this.state.donations);
     });
   }
 
@@ -154,6 +154,7 @@ class loggedInDonor extends React.Component {
     let body2 = document.getElementById("body2");
     body1.style = "display:none";
     body2.style = "display:block";
+    let emil = DonorProfile.getEmil();
 
     let getString = "http://localhost:8000/donors/" + emil;
     axios.get(getString).then(res => {
@@ -180,6 +181,11 @@ class loggedInDonor extends React.Component {
         this.state.donorPassword
       );
     }, 100);
+  }
+
+  logout(e) {
+    DonorProfile.signout();
+    this.props.history.push("/");
   }
 
   cancel(e) {
@@ -215,13 +221,6 @@ class loggedInDonor extends React.Component {
           <div id="fullBox2">
             <div id="main">
               <h2>Welcome Ibrahim!</h2>
-              <input
-                type="button"
-                value="Edit my account"
-                className="btn btn-light btn-block form-control"
-                name="cancel"
-                onClick={this.editAcct.bind(this)}
-              />
 
               <h5>Click on a donation to edit:</h5>
               <table className="table">
@@ -246,17 +245,26 @@ class loggedInDonor extends React.Component {
               </table>
             </div>
             <div id="right">
-              <Link to="/" className={"text-dark"}>
-                Logout
-              </Link>
+              <div id="divideBtns">
+                <input
+                  type="button"
+                  value="Edit my account"
+                  className="btn btn-light btn-block form-control halfBtn"
+                  name="cancel"
+                  onClick={this.editAcct.bind(this)}
+                />
+                <input
+                  type="button"
+                  value="Logout"
+                  className="btn btn-light btn-block form-control halfBtn"
+                  name="logout"
+                  onClick={this.logout.bind(this)}
+                />
+              </div>
 
               <div id="about3">
                 <h5>Add Donation:</h5>
-                <form
-                  className="form-signin"
-                  onSubmit={this.onSubmit}
-                  id="hideform"
-                >
+                <form className="form-signin" onSubmit={this.onSubmit}>
                   <div className="input-group">
                     <input
                       type="text"
@@ -292,7 +300,6 @@ class loggedInDonor extends React.Component {
                 <form
                   className="form-signin"
                   onSubmit={this.onSubmitUpdateDonation}
-                  id="hideform"
                 >
                   <div className="input-group">
                     <input
@@ -350,11 +357,7 @@ class loggedInDonor extends React.Component {
           <header>Donors Site</header>
           <div id="regBox">
             <h5>Edit My Account:</h5>
-            <form
-              className="form-signin"
-              onSubmit={this.onSubmitUpdateDonor}
-              id="hideform"
-            >
+            <form className="form-signin" onSubmit={this.onSubmitUpdateDonor}>
               <div className="input-group">
                 <input
                   type="text"
@@ -440,4 +443,4 @@ class loggedInDonor extends React.Component {
   }
 }
 
-export default loggedInDonor;
+export default withRouter(loggedInDonor);

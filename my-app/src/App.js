@@ -1,14 +1,37 @@
 import React, { Component } from "react";
-import "./style/app.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
+import "./style/app.css";
+import DonorProfile from "./donorComponents/donorProfile";
+
+// public + login
 import donorRegister from "./donorComponents/donorRegister";
+
+// protected
 import loggedInDonor from "./donorComponents/loggedInDonor";
 
 import hospitalRegister from "./hospitalComponents/hospitalRegister";
 import loggedInHospital from "./hospitalComponents/loggedInHospital";
 
 // import route Components here
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      DonorProfile.isAuthenticated() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/" />
+      )
+    }
+  />
+);
 
 class App extends Component {
   render() {
@@ -16,11 +39,14 @@ class App extends Component {
       <Router>
         <div className="App">
           <Switch>
+            {/* public + login*/}
             <Route exact path="/" component={donorRegister} />
-            <Route path="/loggedInDonor" component={loggedInDonor} />
+            {/* protected */}
+            {/* <Route path="/loggedInDonor" component={loggedInDonor} /> */}
 
             <Route path="/hospitalRegister" component={hospitalRegister} />
             <Route path="/loggedInHospital" component={loggedInHospital} />
+            <PrivateRoute path="/loggedInDonor" component={loggedInDonor} />
           </Switch>
         </div>
       </Router>
