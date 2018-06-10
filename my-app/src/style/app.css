@@ -28,7 +28,7 @@ header {
 #about {
   padding: 7%;
   padding-top: 80px;
-  background: #474747;
+  background: #212529;
   width: 50%;
   color: white;
 }
@@ -79,10 +79,9 @@ h5 {
 
 .table {
   margin-top: 3%;
-  width: 375px;
+  width: 100%;
   border-style: solid;
   border-color: #2e2e2e;
-
   border-width: medium;
 }
 #main {
@@ -92,14 +91,14 @@ h5 {
 }
 #about3 {
   padding: 20px;
-  background: #dee2e6;
+  background: #212529;
   width: 270px;
   height: 270px;
   color: white;
 }
 #about2 {
   padding: 20px;
-  background: #dee2e6;
+  background: #212529;
   width: 270px;
   height: 400px;
   color: white;
@@ -127,12 +126,22 @@ h5 {
 }
 #divideBtns {
   display: flex;
+  /* margin: 0; */
+  margin-top: 5px;
 }
 .halfBtn {
-  width: 50%;
+  width: 40%;
   margin: 10px;
-  padding: 10px;
+  margin-bottom: 20px;
 }
+
+#cancelBtn {
+  display: none;
+}
+#confirmBtn {
+  display: none;
+}
+
 /* EditDonorAcct */
 /* ----------------------------- */
 #regBox2 {
@@ -168,16 +177,35 @@ h5 {
   margin-top: -1px;
   margin-right: -1px;
   align-self: center;
-  border-radius: 10px 0 0 10px;
+  border-radius: 5px 0 0 5px;
+  border-style: solid;
+  border-color: #2e2e2e;
+  border-width: thin;
 }
 
 #sel1 {
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 5px 5px 0;
+  border-style: solid;
+  border-color: #2e2e2e;
+  border-width: thin;
 }
 #options {
   width: 30%;
 }
 
+#donorRegisterAlert {
+  display: none;
+}
+#donorLoginAlert {
+  display: none;
+}
+
+#hospitalRegisterAlert {
+  display: none;
+}
+#hospitalLoginAlert {
+  display: none;
+}
 @media (max-width: 800px) {
   #fullBox {
     display: block;
@@ -188,9 +216,7 @@ h5 {
   #regBox {
     width: 100%;
   }
-  .table {
-    width: 100%;
-  }
+
   #about3 {
     /* padding-bottom: 50%; */
     width: 100%;
@@ -203,5 +229,8 @@ h5 {
   }
   #fullBox3 {
     width: 90%;
+  }
+  #fullBox2 {
+    display: block;
   }
 }

@@ -35,6 +35,16 @@ class hospitalRegister extends React.Component {
       "&password=" +
       password;
     axios.post(postString, {}).then(result => {
+      if (result.data) {
+        this.setState({ loginEmail: email, loginPassword: password });
+        this.onLogin(e);
+      } else {
+        let hospitalRegisterAlert = document.getElementById(
+          "hospitalRegisterAlert"
+        );
+        hospitalRegisterAlert.style = "display:block";
+      }
+
       console.log("1:" + postString);
     });
   };
@@ -49,8 +59,7 @@ class hospitalRegister extends React.Component {
       "?password=" +
       loginPassword;
     axios.get(postString, {}).then(result => {
-      let isCorrectPassword = result.data;
-      if (isCorrectPassword) {
+      if (result.data) {
         console.log("Correct");
         HospitalProfile.setEm(loginEmail);
         HospitalProfile.authenticate();
@@ -58,8 +67,8 @@ class hospitalRegister extends React.Component {
           this.props.history.push("/loggedInHospital");
         }, 200);
       } else {
-        console.log("Not Correct");
-        HospitalProfile.signout();
+        let hospitalLoginAlert = document.getElementById("hospitalLoginAlert");
+        hospitalLoginAlert.style = "display:block";
       }
     });
   };
@@ -84,6 +93,13 @@ class hospitalRegister extends React.Component {
             <Link to="/" className={"text-danger"}>
               A donor?
             </Link>
+            <div
+              className="alert alert-warning"
+              id="hospitalLoginAlert"
+              role="alert"
+            >
+              Email and password doesn't match!
+            </div>
             <form className="form-signin" onSubmit={this.onLogin}>
               <div className="input-group">
                 <input
@@ -93,6 +109,7 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="Email"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -103,19 +120,27 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="Password"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
                 <input
                   type="submit"
                   value="Login"
-                  className="btn btn-lg btn-light btn-block form-control"
+                  className="btn btn-lg btn-outline-light btn-block form-control"
                   name="add"
                 />
               </div>
             </form>
           </div>
           <div id="regBox">
+            <div
+              className="alert alert-warning"
+              id="hospitalRegisterAlert"
+              role="alert"
+            >
+              The Email is already registered!
+            </div>
             <h5>Hospitals Registration:</h5>
             <form className="form-signin" onSubmit={this.onSubmit}>
               <div className="input-group">
@@ -126,6 +151,7 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="Hospital Full Name"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -136,6 +162,7 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="Admin Email"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -146,6 +173,7 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="City"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -156,13 +184,15 @@ class hospitalRegister extends React.Component {
                   className="form-control"
                   placeholder="Password"
                   onChange={this.onChange}
+                  required
                 />
               </div>
+              All fields are required
               <div className="input-group">
                 <input
                   type="submit"
-                  value="Confirm"
-                  className="btn btn-lg btn-light btn-block form-control"
+                  value="Register"
+                  className="btn btn-lg btn-outline-dark btn-block form-control"
                   name="add"
                 />
               </div>

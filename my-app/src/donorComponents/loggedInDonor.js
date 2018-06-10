@@ -21,6 +21,15 @@ class loggedInDonor extends React.Component {
     donorPassword: ""
   };
 
+  componentDidMount() {
+    let em = DonorProfile.getEm();
+    let getString = "http://localhost:8000/donations/" + em;
+    axios.get(getString).then(res => {
+      const donations = res.data;
+      if (donations != null) this.setState({ donations: donations });
+    });
+  }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
     console.log(this.state.donorFullName);
@@ -121,15 +130,6 @@ class loggedInDonor extends React.Component {
     this.cancel();
   };
 
-  componentDidMount() {
-    let em = DonorProfile.getEm();
-    let getString = "http://localhost:8000/donations/" + em;
-    axios.get(getString).then(res => {
-      const donations = res.data;
-      if (donations != null) this.setState({ donations: donations });
-    });
-  }
-
   donationClicked(e) {
     let about = document.getElementById("about3");
     let about2 = document.getElementById("about2");
@@ -140,13 +140,6 @@ class loggedInDonor extends React.Component {
     let notes = e.target.parentElement.childNodes[2].innerText;
 
     this.setState({ updateId: id, updateType: type, updateNotes: notes });
-    setTimeout(() => {
-      console.log(
-        this.state.updateId,
-        this.state.updateType,
-        this.state.updateNotes
-      );
-    }, 100);
   }
 
   editAcct(e) {
@@ -200,10 +193,39 @@ class loggedInDonor extends React.Component {
     about2.style = "display:none";
   }
 
-  deleteDonation(e) {
-    e.preventDefault();
-    const id = this.state.updateId;
+  delete(e) {
+    let cancelBtn = document.getElementById("cancelBtn");
+    let confirmBtn = document.getElementById("confirmBtn");
+    let deleteBtn = document.getElementById("deleteBtn");
 
+    cancelBtn.style = "display:block";
+    confirmBtn.style = "display:block";
+    deleteBtn.style = "display:none";
+  }
+
+  cancelDelete(e) {
+    let cancelBtn = document.getElementById("cancelBtn");
+    let confirmBtn = document.getElementById("confirmBtn");
+    let deleteBtn = document.getElementById("deleteBtn");
+
+    cancelBtn.style = "display:none";
+    confirmBtn.style = "display:none";
+    deleteBtn.style = "display:block";
+  }
+
+  confirmDelete(e) {
+    let email = this.state.donorEmail;
+    var postString = "http://localhost:8000/donors/" + email;
+
+    axios.delete(postString, {});
+    setTimeout(() => {
+      this.componentDidMount();
+    }, 500);
+    this.logout();
+  }
+
+  deleteDonation(e) {
+    const id = this.state.updateId;
     var postString = "http://localhost:8000/donations/" + id;
     axios.delete(postString, {}).then(result => {
       console.log("1:" + postString);
@@ -223,7 +245,7 @@ class loggedInDonor extends React.Component {
             <div id="main">
               <h2>Welcome Ibrahim!</h2>
 
-              <h5>Click on a donation to edit:</h5>
+              <h6>Click on a donation to edit:</h6>
               <table className="table">
                 <thead className="thead-dark">
                   <tr>
@@ -250,13 +272,13 @@ class loggedInDonor extends React.Component {
                 <input
                   type="button"
                   value="Edit my account"
-                  className="btn btn-light btn-block form-control halfBtn"
+                  className="btn btn-outline-dark btn-block form-control halfBtn"
                   onClick={this.editAcct.bind(this)}
                 />
                 <input
                   type="button"
                   value="Logout"
-                  className="btn btn-light btn-block form-control halfBtn"
+                  className="btn btn-outline-dark btn-block form-control halfBtn"
                   onClick={this.logout.bind(this)}
                 />
               </div>
@@ -272,6 +294,7 @@ class loggedInDonor extends React.Component {
                       className="form-control"
                       placeholder="Donation Type"
                       onChange={this.onChange}
+                      required
                     />
                   </div>
                   <div className="input-group">
@@ -295,7 +318,7 @@ class loggedInDonor extends React.Component {
                 </form>
               </div>
               <div id="about2">
-                <h5>Edit Donation: ID: {this.state.updateId}</h5>
+                <h5>ID: {this.state.updateId}</h5>
                 <form
                   className="form-signin"
                   onSubmit={this.onSubmitUpdateDonation}
@@ -308,6 +331,7 @@ class loggedInDonor extends React.Component {
                       className="form-control"
                       placeholder="Donation Type"
                       onChange={this.onChange}
+                      required
                     />
                   </div>
                   <div className="input-group">
@@ -331,19 +355,19 @@ class loggedInDonor extends React.Component {
                   <div className="input-group">
                     <input
                       type="button"
-                      value="Delete"
+                      value="Cancel"
                       className="btn btn-lg btn-light btn-block form-control"
-                      name="delete"
-                      onClick={this.deleteDonation.bind(this)}
+                      name="cancel"
+                      onClick={this.cancel.bind(this)}
                     />
                   </div>
                   <div className="input-group">
                     <input
                       type="button"
-                      value="Cancel"
-                      className="btn btn-lg btn-light btn-block form-control"
-                      name="cancel"
-                      onClick={this.cancel.bind(this)}
+                      value="Delete"
+                      className="btn btn-lg btn-danger btn-block form-control"
+                      name="delete"
+                      onClick={this.deleteDonation.bind(this)}
                     />
                   </div>
                 </form>
@@ -365,16 +389,18 @@ class loggedInDonor extends React.Component {
                   className="form-control"
                   placeholder="Full Name"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
                 <input
-                  type="email"
+                  type="text"
                   name="donorEmail"
                   value={this.state.donorEmail}
                   className="form-control"
                   placeholder="Email"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -385,6 +411,7 @@ class loggedInDonor extends React.Component {
                   className="form-control"
                   placeholder="Gender"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -395,6 +422,7 @@ class loggedInDonor extends React.Component {
                   className="form-control"
                   placeholder="Age"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -405,6 +433,7 @@ class loggedInDonor extends React.Component {
                   className="form-control"
                   placeholder="City"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -415,6 +444,7 @@ class loggedInDonor extends React.Component {
                   className="form-control"
                   placeholder="Password"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -422,7 +452,6 @@ class loggedInDonor extends React.Component {
                   type="submit"
                   value="Confirm"
                   className="btn btn-lg btn-light btn-block form-control"
-                  name="add"
                 />
               </div>
               <div className="input-group">
@@ -430,9 +459,31 @@ class loggedInDonor extends React.Component {
                   type="button"
                   value="Cancel"
                   className="btn btn-lg btn-light btn-block form-control"
-                  name="cancel"
                   onClick={this.cancel.bind(this)}
                 />
+              </div>
+              <input
+                type="button"
+                value="Delete The Account"
+                id="deleteBtn"
+                className="btn btn-lg btn-danger btn-block form-control"
+                onClick={this.delete.bind(this)}
+              />
+              <div id="divideBtns">
+                <input
+                  type="button"
+                  value="Delete"
+                  id="confirmBtn"
+                  className="btn btn-lg btn-danger btn-block form-control halfBtn"
+                  onClick={this.confirmDelete.bind(this)}
+                />
+                <input
+                  type="button"
+                  value="Cancel"
+                  id="cancelBtn"
+                  className="btn btn-lg btn-light btn-block form-control halfBtn"
+                  onClick={this.cancelDelete.bind(this)}
+                />{" "}
               </div>
             </form>
           </div>

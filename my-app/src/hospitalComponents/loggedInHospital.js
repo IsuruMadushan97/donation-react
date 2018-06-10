@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import HospitalProfile from "./hospitalProfile";
 
@@ -50,6 +50,25 @@ class loggedInHospital extends React.Component {
     this.cancel();
   };
 
+  donorClicked(e) {
+    let email = e.target.parentElement.childNodes[4].innerText;
+    let type = e.target.parentElement.childNodes[1].innerText;
+    let id = e.target.parentElement.childNodes[0].innerText;
+    console.log(email);
+
+    window.location.href =
+      `mailto:` +
+      email +
+      `?subject=Donation Request&body=
+    Hello, thanks for offering the donation with an ID ` +
+      id +
+      ` from the type ` +
+      type +
+      `.
+        We are ` +
+      this.state.hospitalFullName +
+      ` and we would like to ...`;
+  }
   editAcct(e) {
     let body1 = document.getElementById("body3");
     let body2 = document.getElementById("body4");
@@ -106,6 +125,37 @@ class loggedInHospital extends React.Component {
     body2.style = "display:none";
   }
 
+  delete(e) {
+    let cancelBtn = document.getElementById("cancelBtn");
+    let confirmBtn = document.getElementById("confirmBtn");
+    let deleteBtn = document.getElementById("deleteBtn");
+
+    cancelBtn.style = "display:block";
+    confirmBtn.style = "display:block";
+    deleteBtn.style = "display:none";
+  }
+
+  cancelDelete(e) {
+    let cancelBtn = document.getElementById("cancelBtn");
+    let confirmBtn = document.getElementById("confirmBtn");
+    let deleteBtn = document.getElementById("deleteBtn");
+
+    cancelBtn.style = "display:none";
+    confirmBtn.style = "display:none";
+    deleteBtn.style = "display:block";
+  }
+
+  confirmDelete(e) {
+    let email = this.state.hospitalEmail;
+    var postString = "http://localhost:8000/hospitals/" + email;
+
+    axios.delete(postString, {});
+    setTimeout(() => {
+      this.componentDidMount();
+    }, 500);
+    this.logout();
+  }
+
   render() {
     return (
       <div>
@@ -117,18 +167,18 @@ class loggedInHospital extends React.Component {
               <input
                 type="button"
                 value="Edit my account"
-                className="btn btn-light btn-block form-control halfBtn"
+                className="btn btn-outline-dark btn-block form-control halfBtn"
                 onClick={this.editAcct.bind(this)}
               />
               <input
                 type="button"
                 value="Logout"
-                className="btn btn-light btn-block form-control halfBtn"
+                className="btn btn-outline-dark btn-block form-control halfBtn"
                 onClick={this.logout.bind(this)}
               />
             </div>
 
-            <h5>Choose Donors:</h5>
+            <h6>Click on a donation to send an email to the donor:</h6>
             <div id="searchBox">
               <input
                 type="text"
@@ -164,7 +214,7 @@ class loggedInHospital extends React.Component {
                 </thead>
                 <tbody>
                   {this.state.donations.map(donation => (
-                    <tr>
+                    <tr onClick={this.donorClicked.bind(this)}>
                       <td>
                         <b>{donation.id}</b>
                       </td>
@@ -198,6 +248,7 @@ class loggedInHospital extends React.Component {
                   className="form-control"
                   placeholder="Hospital Full Name"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -208,6 +259,7 @@ class loggedInHospital extends React.Component {
                   className="form-control"
                   placeholder="Admin Email"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -218,16 +270,18 @@ class loggedInHospital extends React.Component {
                   className="form-control"
                   placeholder="City"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
                 <input
-                  type="text"
+                  type="password"
                   name="hospitalPassword"
                   value={this.state.hospitalPassword}
                   className="form-control"
                   placeholder="Password"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="input-group">
@@ -246,6 +300,29 @@ class loggedInHospital extends React.Component {
                   name="cancel"
                   onClick={this.cancel.bind(this)}
                 />
+              </div>
+              <input
+                type="button"
+                value="Delete The Account"
+                id="deleteBtn"
+                className="btn btn-lg btn-danger btn-block form-control"
+                onClick={this.delete.bind(this)}
+              />
+              <div id="divideBtns">
+                <input
+                  type="button"
+                  value="Delete"
+                  id="confirmBtn"
+                  className="btn btn-lg btn-danger btn-block form-control halfBtn"
+                  onClick={this.confirmDelete.bind(this)}
+                />
+                <input
+                  type="button"
+                  value="Cancel"
+                  id="cancelBtn"
+                  className="btn btn-lg btn-light btn-block form-control halfBtn"
+                  onClick={this.cancelDelete.bind(this)}
+                />{" "}
               </div>
             </form>
           </div>
