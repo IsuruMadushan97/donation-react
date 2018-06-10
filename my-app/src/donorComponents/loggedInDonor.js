@@ -32,7 +32,6 @@ class loggedInDonor extends React.Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state.donorFullName);
   };
 
   onSubmit = e => {
@@ -53,11 +52,8 @@ class loggedInDonor extends React.Component {
       em2;
 
     axios.post(postString, {}).then(result => {
-      console.log("1:" + postString);
-    });
-    setTimeout(() => {
       this.componentDidMount();
-    }, 500);
+    });
     this.setState({ type: "", notes: "" });
   };
 
@@ -83,11 +79,8 @@ class loggedInDonor extends React.Component {
       "&donor_id=" +
       em2;
     axios.post(postString, {}).then(result => {
-      console.log("1:" + postString);
-    });
-    setTimeout(() => {
       this.componentDidMount();
-    }, 500);
+    });
     this.cancel();
   };
 
@@ -122,11 +115,8 @@ class loggedInDonor extends React.Component {
       "&password=" +
       donorPassword;
     axios.post(postString, {}).then(result => {
-      console.log("1:" + postString);
-    });
-    setTimeout(() => {
       this.componentDidMount();
-    }, 500);
+    });
     this.cancel();
   };
 
@@ -152,8 +142,6 @@ class loggedInDonor extends React.Component {
     let getString = "http://localhost:8000/donors/" + emil;
     axios.get(getString).then(res => {
       const donorInfo = res.data;
-      // this.setState({ donations: donations });
-      console.log(donorInfo.name);
       this.setState({
         donorFullName: donorInfo.name,
         donorEmail: donorInfo.email,
@@ -163,17 +151,6 @@ class loggedInDonor extends React.Component {
         donorPassword: donorInfo.password
       });
     });
-
-    setTimeout(() => {
-      console.log(
-        this.state.donorFullName,
-        this.state.donorEmail,
-        this.state.donorGender,
-        this.state.donorAge,
-        this.state.donorCity,
-        this.state.donorPassword
-      );
-    }, 100);
   }
 
   logout(e) {
@@ -217,10 +194,9 @@ class loggedInDonor extends React.Component {
     let email = this.state.donorEmail;
     var postString = "http://localhost:8000/donors/" + email;
 
-    axios.delete(postString, {});
-    setTimeout(() => {
+    axios.delete(postString, {}).then(result => {
       this.componentDidMount();
-    }, 500);
+    });
     this.logout();
   }
 
@@ -228,11 +204,8 @@ class loggedInDonor extends React.Component {
     const id = this.state.updateId;
     var postString = "http://localhost:8000/donations/" + id;
     axios.delete(postString, {}).then(result => {
-      console.log("1:" + postString);
-    });
-    setTimeout(() => {
       this.componentDidMount();
-    }, 500);
+    });
     this.cancel();
   }
 

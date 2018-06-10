@@ -43,10 +43,9 @@ class loggedInHospital extends React.Component {
       hospitalCity +
       "&password=" +
       hospitalPassword;
-    axios.post(postString, {}).then(result => {});
-    setTimeout(() => {
+    axios.post(postString, {}).then(result => {
       this.componentDidMount();
-    }, 500);
+    });
     this.cancel();
   };
 
@@ -54,8 +53,6 @@ class loggedInHospital extends React.Component {
     let email = e.target.parentElement.childNodes[4].innerText;
     let type = e.target.parentElement.childNodes[1].innerText;
     let id = e.target.parentElement.childNodes[0].innerText;
-    console.log(email);
-
     window.location.href =
       `mailto:` +
       email +
@@ -113,6 +110,71 @@ class loggedInHospital extends React.Component {
     }
   }
 
+  sortTable(n, e) {
+    var table,
+      rows,
+      switching,
+      i,
+      x,
+      y,
+      shouldSwitch,
+      dir,
+      switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.getElementsByTagName("TR");
+
+      /* Loop through all table rows (except the
+        first, which contains table headers): */
+      for (i = 1; i < rows.length - 1; i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+            based on the direction, asc or desc: */
+        if (dir === "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir === "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+            set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+
   logout(e) {
     HospitalProfile.signout();
     this.props.history.push("/hospitalRegister");
@@ -149,10 +211,9 @@ class loggedInHospital extends React.Component {
     let email = this.state.hospitalEmail;
     var postString = "http://localhost:8000/hospitals/" + email;
 
-    axios.delete(postString, {});
-    setTimeout(() => {
+    axios.delete(postString, {}).then(result => {
       this.componentDidMount();
-    }, 500);
+    });
     this.logout();
   }
 
@@ -203,13 +264,27 @@ class loggedInHospital extends React.Component {
               <table id="myTable" className="table">
                 <thead className="thead-dark">
                   <tr>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Notes</th>
-                    <th>Gender</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                    <th>City</th>
+                    <th onClick={() => this.sortTable(0)} scope="col">
+                      ID
+                    </th>
+                    <th onClick={() => this.sortTable(1)} scope="col">
+                      Type
+                    </th>
+                    <th onClick={() => this.sortTable(2)} scope="col">
+                      Notes
+                    </th>
+                    <th onClick={() => this.sortTable(3)} scope="col">
+                      Gender
+                    </th>
+                    <th onClick={() => this.sortTable(4)} scope="col">
+                      Email
+                    </th>
+                    <th onClick={() => this.sortTable(5)} scope="col">
+                      Age
+                    </th>
+                    <th onClick={() => this.sortTable(6)} scope="col">
+                      City
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

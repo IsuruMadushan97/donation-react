@@ -18,7 +18,6 @@ class donorRegister extends React.Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log({ [e.target.name]: e.target.value });
   };
 
   onSubmit = e => {
@@ -60,12 +59,9 @@ class donorRegister extends React.Component {
       loginPassword;
     axios.get(postString, {}).then(result => {
       if (result.data) {
-        console.log("Correct");
         DonorProfile.setEm(loginEmail);
         DonorProfile.authenticate();
-        setTimeout(() => {
-          this.props.history.push("/loggedInDonor");
-        }, 200);
+        this.props.history.push("/loggedInDonor");
       } else {
         let donorLoginAlert = document.getElementById("donorLoginAlert");
         donorLoginAlert.style = "display:block";

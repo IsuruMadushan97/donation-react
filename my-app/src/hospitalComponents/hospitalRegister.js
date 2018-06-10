@@ -16,12 +16,9 @@ class hospitalRegister extends React.Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log({ [e.target.name]: e.target.value });
   };
 
   onSubmit = e => {
-    console.log("On s");
-
     e.preventDefault();
     const { name, email, city, password } = this.state;
 
@@ -44,8 +41,6 @@ class hospitalRegister extends React.Component {
         );
         hospitalRegisterAlert.style = "display:block";
       }
-
-      console.log("1:" + postString);
     });
   };
 
@@ -60,12 +55,9 @@ class hospitalRegister extends React.Component {
       loginPassword;
     axios.get(postString, {}).then(result => {
       if (result.data) {
-        console.log("Correct");
         HospitalProfile.setEm(loginEmail);
         HospitalProfile.authenticate();
-        setTimeout(() => {
-          this.props.history.push("/loggedInHospital");
-        }, 200);
+        this.props.history.push("/loggedInHospital");
       } else {
         let hospitalLoginAlert = document.getElementById("hospitalLoginAlert");
         hospitalLoginAlert.style = "display:block";

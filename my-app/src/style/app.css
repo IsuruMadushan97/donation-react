@@ -206,6 +206,10 @@ h5 {
 #hospitalLoginAlert {
   display: none;
 }
+
+h6{
+  color: black
+}
 @media (max-width: 800px) {
   #fullBox {
     display: block;
