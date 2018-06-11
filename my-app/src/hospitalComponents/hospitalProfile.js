@@ -4,29 +4,29 @@ let HospitalProfile = (function() {
   function setEm(name) {
     let getString = "http://localhost:8000/hospitals/" + name;
     axios.get(getString).then(res => {
-      localStorage.setItem("em", res.data.id);
-      localStorage.setItem("emil", name);
+      localStorage.setItem("emHospital", res.data.id);
+      localStorage.setItem("emilHospital", name);
     });
   }
 
   function getEm() {
-    return localStorage.getItem("em");
+    return localStorage.getItem("emHospital");
   }
 
   function getEmil() {
-    return localStorage.getItem("emil");
+    return localStorage.getItem("emilHospital");
   }
 
   function authenticate() {
-    localStorage.setItem("authenticate", "true");
+    localStorage.setItem("authenticateHospital", "true");
   }
 
   function signout() {
-    localStorage.setItem("authenticate", "false");
+    localStorage.setItem("authenticateHospital", "false");
   }
 
   function isAuthenticated() {
-    return "true" === localStorage.getItem("authenticate");
+    return "true" === localStorage.getItem("authenticateHospital");
   }
 
   return {

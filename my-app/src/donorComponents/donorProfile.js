@@ -4,29 +4,29 @@ let DonorProfile = (function() {
   function setEm(name) {
     let getString = "http://localhost:8000/donors/" + name;
     axios.get(getString).then(res => {
-      localStorage.setItem("em", res.data.id);
-      localStorage.setItem("emil", name);
+      localStorage.setItem("emDonor", res.data.id);
+      localStorage.setItem("emilDonor", name);
     });
   }
 
   function getEm() {
-    return localStorage.getItem("em");
+    return localStorage.getItem("emDonor");
   }
 
   function getEmil() {
-    return localStorage.getItem("emil");
+    return localStorage.getItem("emilDonor");
   }
 
   function authenticate() {
-    localStorage.setItem("authenticate", "true");
+    localStorage.setItem("authenticateDonor", "true");
   }
 
   function signout() {
-    localStorage.setItem("authenticate", "false");
+    localStorage.setItem("authenticateDonor", "false");
   }
 
   function isAuthenticated() {
-    return "true" === localStorage.getItem("authenticate");
+    return "true" === localStorage.getItem("authenticateDonor");
   }
 
   return {
