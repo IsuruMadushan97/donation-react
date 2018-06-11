@@ -26,6 +26,10 @@ class loggedInDonor extends React.Component {
 
       count: 0
     };
+    this.componentWillMount();
+  }
+
+  componentWillMount() {
     axios
       .get("http://localhost:8000/donations/" + DonorProfile.getEm())
       .then(res => {
@@ -50,7 +54,6 @@ class loggedInDonor extends React.Component {
         }
       });
   }
-
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
