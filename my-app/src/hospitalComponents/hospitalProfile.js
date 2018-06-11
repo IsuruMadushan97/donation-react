@@ -1,10 +1,6 @@
 import axios from "axios";
 
 let HospitalProfile = (function() {
-  let em = "";
-  let emil = "";
-  let authenticated = false;
-
   function setEm(name) {
     let getString = "http://localhost:8000/hospitals/" + name;
     axios.get(getString).then(res => {
