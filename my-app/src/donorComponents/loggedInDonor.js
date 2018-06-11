@@ -4,30 +4,51 @@ import axios from "axios";
 import DonorProfile from "./donorProfile";
 
 class loggedInDonor extends React.Component {
-  state = {
-    donations: [],
-    type: "",
-    notes: "",
+  constructor() {
+    super();
+    this.state = {
+      donations: [],
+      type: "",
+      notes: "",
 
-    updateId: "",
-    updateType: "",
-    updateNotes: "",
+      updateId: "",
+      updateType: "",
+      updateNotes: "",
 
-    donorFullName: "",
-    donorEmail: "",
-    donorGender: "",
-    donorAge: "",
-    donorCity: "",
-    donorPassword: ""
-  };
+      donorFullName: "",
+      donorEmail: "",
+      donorGender: "",
+      donorAge: "",
+      donorCity: "",
+      donorPassword: "",
 
-  componentDidMount() {
-    let em = DonorProfile.getEm();
-    let getString = "http://localhost:8000/donations/" + em;
-    axios.get(getString).then(res => {
-      const donations = res.data;
-      if (donations != null) this.setState({ donations: donations });
-    });
+      theTable: [],
+
+      count: 0
+    };
+    axios
+      .get("http://localhost:8000/donations/" + DonorProfile.getEm())
+      .then(res => {
+        const donations = res.data;
+
+        if (donations != null) {
+          this.setState({
+            theTable: donations.map(donation => (
+              <tr onClick={this.donationClicked.bind(this)} key={donation.id}>
+                <th id="aa" scope="row">
+                  {donation.id}
+                </th>
+                <td>{donation.type}</td>
+                <td>{donation.notes}</td>
+              </tr>
+            ))
+          });
+        } else {
+          this.setState({
+            theTable: null
+          });
+        }
+      });
   }
 
   onChange = e => {
@@ -52,7 +73,7 @@ class loggedInDonor extends React.Component {
       em2;
 
     axios.post(postString, {}).then(result => {
-      this.componentDidMount();
+      this.componentWillMount();
     });
     this.setState({ type: "", notes: "" });
   };
@@ -79,7 +100,7 @@ class loggedInDonor extends React.Component {
       "&donor_id=" +
       em2;
     axios.post(postString, {}).then(result => {
-      this.componentDidMount();
+      this.componentWillMount();
     });
     this.cancel();
   };
@@ -115,7 +136,7 @@ class loggedInDonor extends React.Component {
       "&password=" +
       donorPassword;
     axios.post(postString, {}).then(result => {
-      this.componentDidMount();
+      this.componentWillMount();
     });
     this.cancel();
   };
@@ -195,7 +216,7 @@ class loggedInDonor extends React.Component {
     var postString = "http://localhost:8000/donors/" + email;
 
     axios.delete(postString, {}).then(result => {
-      this.componentDidMount();
+      this.componentWillMount();
     });
     this.logout();
   }
@@ -204,7 +225,7 @@ class loggedInDonor extends React.Component {
     const id = this.state.updateId;
     var postString = "http://localhost:8000/donations/" + id;
     axios.delete(postString, {}).then(result => {
-      this.componentDidMount();
+      this.componentWillMount();
     });
     this.cancel();
   }
@@ -214,6 +235,7 @@ class loggedInDonor extends React.Component {
       <div>
         <div id="body1">
           <header>Donors Site</header>
+
           <div id="fullBox2">
             <div id="main">
               <h2>Welcome Ibrahim!</h2>
@@ -227,17 +249,7 @@ class loggedInDonor extends React.Component {
                     <th scope="col">Notes</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {this.state.donations.map(person => (
-                    <tr onClick={this.donationClicked.bind(this)}>
-                      <th id="aa" scope="row">
-                        {person.id}
-                      </th>
-                      <td>{person.type}</td>
-                      <td>{person.notes}</td>
-                    </tr>
-                  ))}
-                </tbody>
+                <tbody>{this.state.theTable}</tbody>
               </table>
             </div>
             <div id="right">

@@ -289,7 +289,10 @@ class loggedInHospital extends React.Component {
                 </thead>
                 <tbody>
                   {this.state.donations.map(donation => (
-                    <tr onClick={this.donorClicked.bind(this)}>
+                    <tr
+                      onClick={this.donorClicked.bind(this)}
+                      key={donation.id}
+                    >
                       <td>
                         <b>{donation.id}</b>
                       </td>

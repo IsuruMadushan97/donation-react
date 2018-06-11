@@ -61,7 +61,10 @@ class donorRegister extends React.Component {
       if (result.data) {
         DonorProfile.setEm(loginEmail);
         DonorProfile.authenticate();
-        this.props.history.push("/loggedInDonor");
+
+        setTimeout(() => {
+          this.props.history.push("/loggedInDonor");
+        }, 500);
       } else {
         let donorLoginAlert = document.getElementById("donorLoginAlert");
         donorLoginAlert.style = "display:block";
