@@ -99,7 +99,7 @@ class donorRegister extends React.Component {
                 id="donorLoginAlert"
                 role="alert"
               >
-                Email and password doesn't match!
+                Email and password does not match!
               </div>
               <h5>Login:</h5>
               <form className="form-signin" onSubmit={this.onLogin}>
