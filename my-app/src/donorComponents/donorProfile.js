@@ -2,7 +2,7 @@ import axios from "axios";
 
 let DonorProfile = (function() {
   function setEm(name) {
-    let getString = "http://localhost:8000/donors/" + name;
+    let getString = "http://52.47.118.187:8000/donors/" + name;
     axios.get(getString).then(res => {
       localStorage.setItem("emDonor", res.data.id);
       localStorage.setItem("emilDonor", name);

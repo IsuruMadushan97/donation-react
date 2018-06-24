@@ -31,7 +31,7 @@ class loggedInDonor extends React.Component {
 
   componentWillMount() {
     axios
-      .get("http://localhost:8000/donations/" + DonorProfile.getEm())
+      .get("http://52.47.118.187:8000/donations/" + DonorProfile.getEm())
       .then(res => {
         const donations = res.data;
 
@@ -68,7 +68,7 @@ class loggedInDonor extends React.Component {
     let em2 = encodeURIComponent(em);
 
     var postString =
-      "http://localhost:8000/donations?type=" +
+      "http://52.47.118.187:8000/donations?type=" +
       type +
       "&notes=" +
       notes +
@@ -94,7 +94,7 @@ class loggedInDonor extends React.Component {
     let em2 = encodeURIComponent(em);
 
     var postString =
-      "http://localhost:8000/donations/" +
+      "http://52.47.118.187:8000/donations/" +
       id +
       "?type=" +
       type +
@@ -124,7 +124,7 @@ class loggedInDonor extends React.Component {
     let em = DonorProfile.getEm();
 
     var postString =
-      "http://localhost:8000/donors/" +
+      "http://52.47.118.187:8000/donors/" +
       em +
       "?email=" +
       donorEmail +
@@ -163,7 +163,7 @@ class loggedInDonor extends React.Component {
     body2.style = "display:block";
     let emil = DonorProfile.getEmil();
 
-    let getString = "http://localhost:8000/donors/" + emil;
+    let getString = "http://52.47.118.187:8000/donors/" + emil;
     axios.get(getString).then(res => {
       const donorInfo = res.data;
       this.setState({
@@ -216,7 +216,7 @@ class loggedInDonor extends React.Component {
 
   confirmDelete(e) {
     let email = this.state.donorEmail;
-    var postString = "http://localhost:8000/donors/" + email;
+    var postString = "http://52.47.118.187:8000/donors/" + email;
 
     axios.delete(postString, {}).then(result => {
       this.componentWillMount();
@@ -226,7 +226,7 @@ class loggedInDonor extends React.Component {
 
   deleteDonation(e) {
     const id = this.state.updateId;
-    var postString = "http://localhost:8000/donations/" + id;
+    var postString = "http://52.47.118.187:8000/donations/" + id;
     axios.delete(postString, {}).then(result => {
       this.componentWillMount();
     });

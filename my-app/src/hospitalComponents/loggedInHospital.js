@@ -14,7 +14,7 @@ class loggedInHospital extends React.Component {
 
   componentDidMount() {
     let donations = [];
-    axios.get("http://localhost:8000/donations").then(res => {
+    axios.get("http://52.47.118.187:8000/donations").then(res => {
       donations = res.data;
       this.setState({ donations: donations });
     });
@@ -33,7 +33,7 @@ class loggedInHospital extends React.Component {
     let em = HospitalProfile.getEm();
 
     var postString =
-      "http://localhost:8000/hospitals/" +
+      "http://52.47.118.187:8000/hospitals/" +
       em +
       "?email=" +
       hospitalEmail +
@@ -73,7 +73,7 @@ class loggedInHospital extends React.Component {
     body2.style = "display:block";
     let emil = HospitalProfile.getEmil();
 
-    let getString = "http://localhost:8000/hospitals/" + emil;
+    let getString = "http://52.47.118.187:8000/hospitals/" + emil;
     axios.get(getString).then(res => {
       const hospitalInfo = res.data;
       // this.setState({ donations: donations });
@@ -209,7 +209,7 @@ class loggedInHospital extends React.Component {
 
   confirmDelete(e) {
     let email = this.state.hospitalEmail;
-    var postString = "http://localhost:8000/hospitals/" + email;
+    var postString = "http://52.47.118.187:8000/hospitals/" + email;
 
     axios.delete(postString, {}).then(result => {
       this.componentDidMount();
