@@ -2,9 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import DonorProfile from "./donorProfile";
-import LoggedInDonor from "./loggedInDonor";
+import PropTypes from "prop-types";
 
 class donorRegister extends React.Component {
+  constructor() {
+    super();
+    this.getContent = this.getContent.bind(this);
+  }
+
   state = {
     name: "",
     email: "",
@@ -16,6 +21,9 @@ class donorRegister extends React.Component {
     loginEmail: "",
     loginPassword: ""
   };
+  getContent(event) {
+    this.props.callback(event);
+  }
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -63,7 +71,7 @@ class donorRegister extends React.Component {
         console.log("HERE999:  ", result.data.id);
         DonorProfile.setToken(result.data.token);
 
-        LoggedInDonor.setState({ currentId: result.data.id });
+        this.getContent(result.data.id);
         setTimeout(() => {
           this.props.history.push("/loggedInDonor");
         }, 500);
@@ -231,5 +239,8 @@ class donorRegister extends React.Component {
     );
   }
 }
+donorRegister.protoTypes = {
+  callback: PropTypes.func
+};
 
 export default donorRegister;

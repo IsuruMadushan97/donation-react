@@ -16,6 +16,8 @@ import HospitalProfile from "./hospitalComponents/hospitalProfile";
 import hospitalRegister from "./hospitalComponents/hospitalRegister";
 import loggedInHospital from "./hospitalComponents/loggedInHospital";
 
+// I will continue from this link
+// https://stackoverflow.com/questions/41966762/reactjs-how-to-transfer-data-between-pages
 const DonorPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -43,6 +45,17 @@ const HospitalPrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 class App extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      data: "some default data"
+    };
+  }
+
+  updateData(data) {
+    this.setState({ data });
+  }
+
   render() {
     return (
       <Router>

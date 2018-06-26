@@ -33,6 +33,7 @@ class loggedInDonor extends React.Component {
   }
 
   async componentWillMount() {
+    this.setState({ currentId: this.props.data });
     console.log(":::Here::: ", this.state.currentId);
     let x;
     await DonorProfile.getEm().then(function(value) {
