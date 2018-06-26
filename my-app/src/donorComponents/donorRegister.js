@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import DonorProfile from "./donorProfile";
+import LoggedInDonor from "./loggedInDonor";
 
 class donorRegister extends React.Component {
   state = {
@@ -25,7 +26,7 @@ class donorRegister extends React.Component {
     const { name, email, gender, age, city, password } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/donors?email=" +
+      "http://localhost:8000/donors?email=" +
       email +
       "&name=" +
       name +
@@ -53,15 +54,16 @@ class donorRegister extends React.Component {
     const { loginEmail, loginPassword } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/donorspass/" +
+      "http://localhost:8000/donorspass/" +
       loginEmail +
       "?password=" +
       loginPassword;
     axios.get(postString, {}).then(result => {
-      if (result.data) {
-        DonorProfile.setEm(loginEmail);
-        DonorProfile.authenticate();
+      if (result.data !== "false") {
+        console.log("HERE999:  ", result.data.id);
+        DonorProfile.setToken(result.data.token);
 
+        LoggedInDonor.setState({ currentId: result.data.id });
         setTimeout(() => {
           this.props.history.push("/loggedInDonor");
         }, 500);

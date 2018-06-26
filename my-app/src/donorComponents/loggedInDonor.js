@@ -24,14 +24,24 @@ class loggedInDonor extends React.Component {
 
       theTable: [],
 
-      count: 0
+      count: 0,
+
+      currentEmail: "",
+      currentId: ""
     };
     this.componentWillMount();
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    console.log(":::Here::: ", this.state.currentId);
+    let x;
+    await DonorProfile.getEm().then(function(value) {
+      x = value;
+    });
+    this.setState({ currentEmail: x });
+    console.log("The email", this.state.currentEmail);
     axios
-      .get("http://52.47.118.187:8000/donations/" + DonorProfile.getEm())
+      .get("http://localhost:8000/donations/" + this.state.currentEmail)
       .then(res => {
         const donations = res.data;
 
@@ -61,14 +71,14 @@ class loggedInDonor extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     let { type, notes } = this.state;
-    let em = DonorProfile.getEm();
+    let em = this.state.currentEmail;
 
     type = encodeURIComponent(type);
     notes = encodeURIComponent(notes);
     let em2 = encodeURIComponent(em);
 
     var postString =
-      "http://52.47.118.187:8000/donations?type=" +
+      "http://localhost:8000/donations?type=" +
       type +
       "&notes=" +
       notes +
@@ -86,7 +96,7 @@ class loggedInDonor extends React.Component {
     let id = this.state.updateId;
     let type = this.state.updateType;
     let notes = this.state.updateNotes;
-    let em = DonorProfile.getEm();
+    let em = this.state.currentEmail;
 
     id = encodeURIComponent(id);
     type = encodeURIComponent(type);
@@ -94,7 +104,7 @@ class loggedInDonor extends React.Component {
     let em2 = encodeURIComponent(em);
 
     var postString =
-      "http://52.47.118.187:8000/donations/" +
+      "http://localhost:8000/donations/" +
       id +
       "?type=" +
       type +
@@ -121,10 +131,10 @@ class loggedInDonor extends React.Component {
     donorAge = encodeURIComponent(donorAge);
     donorCity = encodeURIComponent(donorCity);
     donorPassword = encodeURIComponent(donorPassword);
-    let em = DonorProfile.getEm();
+    let em = this.state.currentEmail;
 
     var postString =
-      "http://52.47.118.187:8000/donors/" +
+      "http://localhost:8000/donors/" +
       em +
       "?email=" +
       donorEmail +
@@ -161,11 +171,12 @@ class loggedInDonor extends React.Component {
     let body2 = document.getElementById("body2");
     body1.style = "display:none";
     body2.style = "display:block";
-    let emil = DonorProfile.getEmil();
+    let em = this.state.currentEmail;
 
-    let getString = "http://52.47.118.187:8000/donors/" + emil;
+    let getString = "http://localhost:8000/donors/" + em;
     axios.get(getString).then(res => {
       const donorInfo = res.data;
+      console.log(donorInfo);
       this.setState({
         donorFullName: donorInfo.name,
         donorEmail: donorInfo.email,
@@ -216,7 +227,7 @@ class loggedInDonor extends React.Component {
 
   confirmDelete(e) {
     let email = this.state.donorEmail;
-    var postString = "http://52.47.118.187:8000/donors/" + email;
+    var postString = "http://localhost:8000/donors/" + email;
 
     axios.delete(postString, {}).then(result => {
       this.componentWillMount();
@@ -226,7 +237,7 @@ class loggedInDonor extends React.Component {
 
   deleteDonation(e) {
     const id = this.state.updateId;
-    var postString = "http://52.47.118.187:8000/donations/" + id;
+    var postString = "http://localhost:8000/donations/" + id;
     axios.delete(postString, {}).then(result => {
       this.componentWillMount();
     });

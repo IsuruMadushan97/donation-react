@@ -1,41 +1,62 @@
 import axios from "axios";
 
 let DonorProfile = (function() {
-  function setEm(name) {
-    let getString = "http://52.47.118.187:8000/donors/" + name;
-    axios.get(getString).then(res => {
-      localStorage.setItem("emDonor", res.data.id);
-      localStorage.setItem("emilDonor", name);
+  // function setEm(name) {
+  //   let getString = "http://localhost:8000/donors/" + name;
+  //   axios.get(getString).then(res => {
+  //     localStorage.setItem("emDonor", res.data.id);
+  //     localStorage.setItem("emilDonor", name);
+  //   });
+  // }
+
+  // async function getEm() {
+  //   let returnedId;
+  //   let token = localStorage.getItem("token");
+  //   let getString = "http://localhost:8000/donortoken?token=" + token;
+  //   axios.get(getString).then(res => {
+  //     returnedId = res.data;
+  //     console.log("returnedId1", returnedId);
+  //   });
+  //   console.log("returnedId2", returnedId);
+  //   return returnedId;
+  // }
+  async function getEm() {
+    let returnedId;
+    let token = localStorage.getItem("token");
+    let getString = "http://localhost:8000/donortoken?token=" + token;
+    await axios.get(getString).then(res => {
+      returnedId = res.data;
     });
-  }
-
-  function getEm() {
-    return localStorage.getItem("emDonor");
-  }
-
-  function getEmil() {
-    return localStorage.getItem("emilDonor");
-  }
-
-  function authenticate() {
-    localStorage.setItem("authenticateDonor", "true");
+    return returnedId;
   }
 
   function signout() {
-    localStorage.setItem("authenticateDonor", "false");
+    localStorage.setItem("token", "");
   }
 
-  function isAuthenticated() {
-    return "true" === localStorage.getItem("authenticateDonor");
+  async function isAuthenticated() {
+    let returnedBoolean;
+    let token = localStorage.getItem("token");
+    let getString = "http://localhost:8000/donortoken?token=" + token;
+    axios.get(getString).then(res => {
+      if (res.data !== "") {
+        returnedBoolean = true;
+      } else {
+        returnedBoolean = false;
+      }
+    });
+    return returnedBoolean;
+  }
+
+  function setToken(token) {
+    localStorage.setItem("token", token);
   }
 
   return {
     getEm: getEm,
-    setEm: setEm,
-    getEmil: getEmil,
-    authenticate: authenticate,
     signout: signout,
-    isAuthenticated: isAuthenticated
+    isAuthenticated: isAuthenticated,
+    setToken: setToken
   };
 })();
 
