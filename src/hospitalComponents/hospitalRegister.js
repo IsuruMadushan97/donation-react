@@ -23,7 +23,7 @@ class hospitalRegister extends React.Component {
     const { name, email, city, password } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/hospitals?email=" +
+      "http://localhost:8000/hospitals?email=" +
       email +
       "&name=" +
       name +
@@ -49,7 +49,7 @@ class hospitalRegister extends React.Component {
     const { loginEmail, loginPassword } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/hospitalspass/" +
+      "http://localhost:8000/hospitalspass/" +
       loginEmail +
       "?password=" +
       loginPassword;

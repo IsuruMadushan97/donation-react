@@ -1,8 +1,8 @@
 import axios from "axios";
 
-let HospitalProfile = (function() {
+let HospitalProfile = (function () {
   function setEm(name) {
-    let getString = "http://52.47.118.187:8000/hospitals/" + name;
+    let getString = "http://localhost:8000/hospitals/" + name;
     axios.get(getString).then(res => {
       localStorage.setItem("emHospital", res.data.id);
       localStorage.setItem("emilHospital", name);

@@ -25,7 +25,7 @@ class donorRegister extends React.Component {
     const { name, email, gender, age, city, password } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/donors?email=" +
+      "http://localhost:8000/donors?email=" +
       email +
       "&name=" +
       name +
@@ -53,7 +53,7 @@ class donorRegister extends React.Component {
     const { loginEmail, loginPassword } = this.state;
 
     var postString =
-      "http://52.47.118.187:8000/donorspass/" +
+      "http://localhost:8000/donorspass/" +
       loginEmail +
       "?password=" +
       loginPassword;
